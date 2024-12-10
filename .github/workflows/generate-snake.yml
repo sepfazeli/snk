@@ -11,19 +11,24 @@ jobs:
   generate:
     runs-on: ubuntu-latest
     steps:
+      # Step 1: Checkout the repository code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Generate the snake animation
       - name: Generate Snake Animation
         uses: Platane/snk@v2
         with:
-          output: dist/snake.svg
+          github_user_name: sepfazeli  # Replace with your GitHub username
+          outputs: dist/snake.svg
 
+      # Step 3: Ensure the 'dist' directory exists
       - name: Create dist Directory
         run: mkdir -p dist
 
+      # Step 4: Push the snake animation to the 'output' branch
       - name: Push Snake Animation to Output Branch
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GH_PAT }}
+          github_token: ${{ secrets.GH_PAT }}  # Custom GitHub Personal Access Token
           publish_dir: dist
