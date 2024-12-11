@@ -1,21 +1,20 @@
 name: Generate Snake Animation
 
 on:
-  # Schedule: Runs daily at midnight
   schedule:
-    - cron: "0 0 * * *"
-  # Allows manual execution
-  workflow_dispatch:
+    - cron: "0 0 * * *" # Runs daily at midnight
+  workflow_dispatch: # Allows manual execution
 
 jobs:
   generate:
     runs-on: ubuntu-20.04
 
     steps:
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Generate the Snake Animation
+      # Step 2: Generate Snake Animation
       - name: Generate Snake Animation
         uses: Platane/snk@v3
         with:
@@ -28,5 +27,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }} # Use secrets.GH_PAT if GITHUB_TOKEN fails
           publish_dir: ./dist
