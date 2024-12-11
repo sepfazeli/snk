@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
