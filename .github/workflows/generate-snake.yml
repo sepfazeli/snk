@@ -10,15 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: Platane/snk@v3
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          github_user_name: "sepfazeli" 
+          node-version: '16'
+      
+      - name: Generate Snake Animation
+        uses: Platane/snk@v3
+        with:
+          github_user_name: "sepfazeli" # Your GitHub username
           outputs: |
             dist/github-snake.svg
             dist/github-snake-dark.svg?palette=github-dark
-            dist/ocean.gif?color_snake=orange&color_dots=#bfd6f6,#8dbdff,#64a1f4,#4b91f1,#3c7dd9
+
+      - name: Check Output Directory
+        run: ls -R dist
+
       - name: Commit and Push
         uses: EndBug/add-and-commit@v9
         with:
-          add: "dist/*.svg dist/*.gif"
+          add: "dist/*.svg"
           message: "Generated new snake animation"
+          author_name: "GitHub Action"
+          author_email: "action@github.com"
