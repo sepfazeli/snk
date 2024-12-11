@@ -1,43 +1,20 @@
 name: Generate Snake Animation
 
 on:
-  workflow_dispatch: # Allows manual trigger
+  schedule:
+    - cron: "0 0 * * *" # Runs daily at midnight
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
-  build:
-    runs-on: ubuntu-22.04 # Use a stable runner
-
+  generate:
+    runs-on: ubuntu-latest
     steps:
-      # Checkout repository
-      - uses: actions/checkout@v3
-
-      # Create the 'dist' folder to ensure it exists
-      - name: Create Output Directory
-        run: mkdir -p dist
-
-      # Generate the snake animation
-      - name: Generate Snake Animation
-        uses: Platane/snk/svg-only@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Run Snake Generator
+        uses: Platane/snk@v3
         with:
-          github_user_name: "sepfazeli" # Replace with your GitHub username
+          github_user_name: ${{ github.repository_owner }}
           outputs: |
             dist/github-snake.svg
-
-      # Debug: Inspect files and folder structure
-      - name: Inspect Directory Structure
-        run: |
-          echo "Listing all files and directories:"
-          ls -R
-
-      # Debug: Specifically check the 'dist' folder
-      - name: Check dist Folder Contents
-        run: |
-          echo "Contents of 'dist' folder:"
-          ls -la dist || echo "'dist' folder does not exist"
-
-      # Commit and push the changes
-      - name: Commit and Push Changes
-        uses: EndBug/add-and-commit@v9
-        with:
-          add: "dist/*.svg"
-          message: "Generated new snake animation"
+            dist/github-snake-dark.svg?palette=github-dark
