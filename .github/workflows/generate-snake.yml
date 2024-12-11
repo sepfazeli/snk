@@ -19,16 +19,18 @@ jobs:
       - name: Generate Snake Animation
         uses: Platane/snk@v2
         with:
-          github_user_name: sepfazeli  # Your GitHub username
+          github_user_name: sepfazeli  # Replace with your GitHub username
           outputs: dist/snake.svg
 
       # Step 3: Ensure the 'dist' directory exists
       - name: Create dist Directory
         run: mkdir -p dist
 
-      # Step 4: Push the snake animation to the 'output' branch
-      - name: Deploy Snake Animation to Output Branch
-        uses: peaceiris/actions-gh-pages@v3
+      # Step 4: Deploy the snake animation to the `gh-pages` branch
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
-          github_token: ${{ secrets.GH_PAT }}  # Use your custom GitHub Personal Access Token
-          publish_dir: dist
+          target_branch: gh-pages  # Change this to 'output' if you're using that branch
+          build_dir: dist          # Directory where the snake.svg is located
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # Use your custom GitHub Personal Access Token
