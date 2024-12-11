@@ -1,36 +1,24 @@
 name: Generate Snake Animation
 
 on:
-  push:
-    branches:
-      - main
   schedule:
-    - cron: "0 0 * * *" # Run daily at midnight UTC
+    - cron: "0 0 * * *" # Runs daily at midnight UTC
+  workflow_dispatch: # Allows manual trigger of the workflow
 
 jobs:
-  generate:
+  build:
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Checkout the repository code
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      # Step 2: Generate the snake animation
-      - name: Generate Snake Animation
-        uses: Platane/snk@v2
+      - uses: actions/checkout@v3
+      - uses: Platane/snk@v3
         with:
-          github_user_name: sepfazeli  # Replace with your GitHub username
-          outputs: dist/snake.svg
-
-      # Step 3: Ensure the 'dist' directory exists
-      - name: Create dist Directory
-        run: mkdir -p dist
-
-      # Step 4: Deploy the snake animation to the `gh-pages` branch
-      - name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v3.1.0
+          github_user_name: "sepfazeli" 
+          outputs: |
+            dist/github-snake.svg
+            dist/github-snake-dark.svg?palette=github-dark
+            dist/ocean.gif?color_snake=orange&color_dots=#bfd6f6,#8dbdff,#64a1f4,#4b91f1,#3c7dd9
+      - name: Commit and Push
+        uses: EndBug/add-and-commit@v9
         with:
-          target_branch: gh-pages  # Change this to 'output' if you're using that branch
-          build_dir: dist          # Directory where the snake.svg is located
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # Default GitHub Actions Token
+          add: "dist/*.svg dist/*.gif"
+          message: "Generated new snake animation"
