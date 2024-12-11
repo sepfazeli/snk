@@ -9,14 +9,14 @@ on:
 
 jobs:
   generate:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Generate Snake Animation
+      # Step 2: Generate the Snake Animation
       - name: Generate Snake Animation
         uses: Platane/snk@v3
         with:
@@ -25,11 +25,9 @@ jobs:
             dist/github-snake.svg
             dist/github-snake-dark.svg?palette=github-dark
 
-      # Step 3: Commit and Push Changes
-      - name: Commit and Push changes
-        run: |
-          git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
-          git add -A
-          git commit -m "Generate GitHub Contribution Snake"
-          git push
+      # Step 3: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
