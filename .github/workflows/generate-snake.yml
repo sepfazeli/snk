@@ -1,31 +1,43 @@
 name: Generate Snake Animation
 
 on:
-  workflow_dispatch:
+  workflow_dispatch: # Allows manual trigger
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04 # Use a stable runner
 
     steps:
+      # Checkout repository
       - uses: actions/checkout@v3
-      
+
+      # Create the 'dist' folder to ensure it exists
+      - name: Create Output Directory
+        run: mkdir -p dist
+
+      # Generate the snake animation
       - name: Generate Snake Animation
         uses: Platane/snk/svg-only@v3
         with:
-          github_user_name: "sepfazeli"
+          github_user_name: "sepfazeli" # Replace with your GitHub username
           outputs: |
             dist/github-snake.svg
-      
-      - name: Debug Output Directory
+
+      # Debug: Inspect files and folder structure
+      - name: Inspect Directory Structure
         run: |
-          pwd
+          echo "Listing all files and directories:"
           ls -R
-      
-      - name: Commit and Push
+
+      # Debug: Specifically check the 'dist' folder
+      - name: Check dist Folder Contents
+        run: |
+          echo "Contents of 'dist' folder:"
+          ls -la dist || echo "'dist' folder does not exist"
+
+      # Commit and push the changes
+      - name: Commit and Push Changes
         uses: EndBug/add-and-commit@v9
         with:
           add: "dist/*.svg"
           message: "Generated new snake animation"
-          author_name: "GitHub Action"
-          author_email: "action@github.com"
