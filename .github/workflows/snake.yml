@@ -1,0 +1,35 @@
+name: Generate Snake Animation
+
+on:
+  # Schedule: Runs daily at midnight
+  schedule:
+    - cron: "0 0 * * *"
+  # Allows manual execution
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Generate Snake Animation
+      - name: Generate Snake Animation
+        uses: Platane/snk@v3
+        with:
+          github_user_name: sepfazeli
+          outputs: |
+            dist/github-snake.svg
+            dist/github-snake-dark.svg?palette=github-dark
+
+      # Step 3: Commit and Push Changes
+      - name: Commit and Push changes
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add -A
+          git commit -m "Generate GitHub Contribution Snake"
+          git push
