@@ -33,4 +33,4 @@ jobs:
           target_branch: gh-pages  # Change this to 'output' if you're using that branch
           build_dir: dist          # Directory where the snake.svg is located
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}  # Use your custom GitHub Personal Access Token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Default GitHub Actions Token
